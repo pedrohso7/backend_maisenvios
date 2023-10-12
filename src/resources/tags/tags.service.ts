@@ -1,26 +1,86 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
+import { Tag } from './entities/tag.entity';
 
 @Injectable()
 export class TagsService {
+  private tags:Tag[];
+  constructor(){
+    this.tags = [];
+  };
+
   create(createTagDto: CreateTagDto) {
-    return 'This action adds a new tag';
+    try{
+      const {name, status, source, price} = createTagDto;
+      const tag = new Tag({
+        name: name,
+        status: status,
+        source: source,
+        price: price,
+      });
+      this.tags.push(tag);
+      return  tag;
+    } catch (error){
+      // throw new DefaultException();
+      throw error;
+    }    
   }
 
   findAll() {
-    return `This action returns all tags`;
+    try{
+      return this.tags;
+    } catch (error){
+        // throw new DefaultException();
+      throw error;
+    }    
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} tag`;
+    try{
+        return this.tags[id];
+    } catch (error){
+        // throw new DefaultException();
+      throw error;
+    } 
   }
 
   update(id: number, updateTagDto: UpdateTagDto) {
-    return `This action updates a #${id} tag`;
+    try{
+      const {name, status, source, price} = updateTagDto;
+      const tag = new Tag({
+        name: name,
+        status: status,
+        source: source,
+        price: price,
+      });
+      this.tags[id] = tag;
+      return tag;
+    } catch (error){
+        // throw new DefaultException();
+      throw error;
+    }
   }
 
   remove(id: number) {
-    return `This action removes a #${id} tag`;
+    try{
+      this._shiftElementsAtIndex(id);
+      return this.tags;
+    } catch (error){
+        // throw new DefaultException();
+      throw error;
+    } 
+  }
+
+  private _shiftElementsAtIndex(index: number){
+    for(let i = index; i < this.tags.length; i++){
+      const nextIndex = i + 1; 
+      if(nextIndex == this.tags.length){
+        this.tags[i] = undefined;   
+        return;
+      } 
+      
+      this.tags[i] = this.tags[nextIndex];
+    }
   }
 }

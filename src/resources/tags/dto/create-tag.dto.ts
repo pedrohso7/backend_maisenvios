@@ -1,6 +1,17 @@
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+
 export class  CreateTagDto {
-    name: String;
+    @IsString()
+    @IsNotEmpty()
+    name: string;
+    
+    @IsNumber()
     status: number;
-    source: String;
+    
+    @IsString()
+    @IsNotEmpty()
+    source: string;
+    
+    @IsNumber()
     price: number;
 }

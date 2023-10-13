@@ -1,6 +1,7 @@
 export interface ErrorResponse {
     message: String;
     statusCode: number;
+    error: String;
 }
 
 export interface SuccessfulResponse<T> {

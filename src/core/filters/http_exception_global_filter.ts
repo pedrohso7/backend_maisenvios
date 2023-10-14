@@ -8,17 +8,16 @@ export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
-    
     const status = exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
     const error = this.getErrorMessage(status);
-    const message = status != HttpStatus.BAD_REQUEST ? error : exception.message;
-
+    const message = exception.message ?? error;
+    
     const errorResponse: ErrorResponse = {
       statusCode: status,
-      message:  message || HttpExceptionMessages.INTERNAL_SERVER_ERROR,
-      error: error || HttpExceptionMessages.INTERNAL_SERVER_ERROR,
+      message:  message ?? HttpExceptionMessages.INTERNAL_SERVER_ERROR,
+      error: error,
     };
-
+    
     response.status(status).json(errorResponse);
   }
 
@@ -26,6 +25,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     switch(status){
       case HttpStatus.NOT_FOUND: return HttpExceptionMessages.NOT_FOUND;
       case HttpStatus.BAD_REQUEST: return HttpExceptionMessages.BAD_REQUEST;
+      default: return HttpExceptionMessages.INTERNAL_SERVER_ERROR;
     }
   }
 }

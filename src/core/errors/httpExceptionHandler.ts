@@ -4,14 +4,14 @@ import { HttpExceptionMessages } from '../constants/exception_messages_constants
 
 export const handleHttpException = (error: any): ErrorResponse => {
   if(error instanceof String){
-    return {
+    throw {
       message: error,
       statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
       error: HttpExceptionMessages.INTERNAL_SERVER_ERROR,
     } as ErrorResponse;
   }
 
-  return {
+  throw {
     message: error.message,
     statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
     error: HttpExceptionMessages.INTERNAL_SERVER_ERROR,

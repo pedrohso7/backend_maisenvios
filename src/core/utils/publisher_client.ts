@@ -23,9 +23,7 @@ export class PublisherService {
 
   @Post()
   async sendFileToConsumer(data: Express.Multer.File, callbackAction: (data: any) => void) {
-    const extractedData = await lastValueFrom(this.client.send('process_data', {
-      data: data.buffer.toString('base64'),
-    }));  
+    const extractedData = await lastValueFrom(this.client.send('process_data', data.buffer.toString('base64')));  
     callbackAction(extractedData);
   }
 }

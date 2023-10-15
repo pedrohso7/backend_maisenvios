@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, UseInterceptors, UploadedFile, Res } from '@nestjs/common';
 import { TagsService } from './tags.service';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
@@ -8,68 +8,68 @@ import { DefaultResponse, SuccessfulResponse } from 'src/core/response/default_r
 import { FileInterceptor } from '@nestjs/platform-express';
 import { xlsxFileValidatorInterceptor } from 'src/core/interceptors/xlsxFileValidator.interceptor';
 import { PublisherService } from 'src/core/utils/publisher_client';
-
+import { Response } from 'express';
 @Controller('tags')
 export class TagsController {
   constructor(private readonly tagsService: TagsService, private readonly publisherService: PublisherService) {}
 
   @Post()
-  create(@Body() createTagDto: CreateTagDto): DefaultResponse<Tag> {
+  create(@Body() createTagDto: CreateTagDto, @Res() res: Response) {
     try{
-      return {
+      return res.status(HttpStatus.CREATED).send({
         statusCode: HttpStatus.CREATED,
         data: this.tagsService.create(createTagDto),
-      } as SuccessfulResponse<Tag>;
+      } as SuccessfulResponse<Tag>);
     } catch (error){
       return handleHttpException(error);
     }
   }
 
   @Get()
-  findAll(): DefaultResponse<Tag[]> {
+  findAll(@Res() res: Response){
     try{
-      return {
+      return res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,
         data: this.tagsService.findAll(),
-      } as SuccessfulResponse<Tag[]>;
+      } as SuccessfulResponse<Tag[]>);
     } catch (error){
       return handleHttpException(error);
     }
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): DefaultResponse<Tag> {
+  findOne(@Param('id') id: string, @Res() res: Response) {
     try{
-      return {
+      return res.status(HttpStatus.OK).send({
         statusCode: HttpStatus.OK,
         data: this.tagsService.findOne(+id),
-      } as SuccessfulResponse<Tag>;
+      } as SuccessfulResponse<Tag>);
     } catch (error){
       return handleHttpException(error);
     }
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTagDto: UpdateTagDto): DefaultResponse<{}> {
+  update(@Param('id') id: string, @Body() updateTagDto: UpdateTagDto, @Res() res: Response) {
     try{
       this.tagsService.update(+id, updateTagDto);
-      return {
+      return res.status(HttpStatus.NO_CONTENT).send({
         statusCode: HttpStatus.NO_CONTENT,
         data: {},
-      } as SuccessfulResponse<Tag>;             
+      } as SuccessfulResponse<Tag>);             
     } catch (error){
       return handleHttpException(error);
     }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): DefaultResponse<{}> {
+  remove(@Param('id') id: string, @Res() res: Response){
     try{
       this.tagsService.remove(+id);
-      return {
+      return res.status(HttpStatus.NO_CONTENT).send({
         statusCode: HttpStatus.NO_CONTENT,
         data: {},
-      } as SuccessfulResponse<Tag>;  
+      } as SuccessfulResponse<Tag>);  
     } catch (error){
       return handleHttpException(error);
     }
@@ -83,18 +83,19 @@ export class TagsController {
     // },
     ),
   )
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
+  uploadFile(@UploadedFile() file: Express.Multer.File, @Res() res: Response) {
     try {
       this.publisherService.sendFileToConsumer(
         file, 
         (data) => this.tagsService.createFromExtractedFile(data),
       );
-      return {
+
+      return res.status(HttpStatus.ACCEPTED).send({
         statusCode: HttpStatus.ACCEPTED,
         data: {
           message: 'Arquivo sendo processado...'
         },
-      } as SuccessfulResponse<{message: string}>;
+      } as SuccessfulResponse<{message: string}>);
     } catch (error) {
       return handleHttpException(error);
     }

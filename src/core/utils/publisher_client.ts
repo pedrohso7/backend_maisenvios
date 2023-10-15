@@ -2,8 +2,6 @@ import { Injectable, Post } from '@nestjs/common';
 import { ClientProxyFactory, Transport, ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 
-
-
 @Injectable()
 export class PublisherService {
   private client: ClientProxy;

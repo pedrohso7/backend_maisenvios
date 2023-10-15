@@ -12,21 +12,25 @@ export class TagsService {
   };
 
   create(createTagDto: CreateTagDto) {
-    const {name, status, source, price} = createTagDto;
-    const tag = new Tag({
+    const {tag, name, status, source, price} = createTagDto;
+    
+    const newTag = new Tag({
+      tag: tag,
       name: name,
       status: status,
       source: source,
       price: price,
     });
-    this.tags.push(tag);
-    return tag;
+    this.tags.push(newTag);
+    
+    return newTag;
   }
 
   createFromExtractedFile(data: any) {
     let extractedTags = data as any[];
     extractedTags.forEach((tag)=>{
       const newTag =  new Tag({
+        tag: tag.props.tag,
         name: tag.props.name,
         status: tag.props.status,
         source: tag.props.source,
@@ -34,7 +38,7 @@ export class TagsService {
       });
       this.tags.push(newTag);
     });
-    
+
     return this.tags;
   }
 
@@ -47,15 +51,18 @@ export class TagsService {
   }
 
   update(id: number, updateTagDto: UpdateTagDto) {
-    const {name, status, source, price} = updateTagDto;
-    const tag = new Tag({
+    const {tag, name, status, source, price} = updateTagDto;
+    
+    const newTag = new Tag({
+      tag: tag,
       name: name,
       status: status,
       source: source,
       price: price,
     });
-    this.tags[id] = tag;
-    return tag;
+
+    this.tags[id] = newTag;
+    return newTag;
   }
 
   remove(id: number) {

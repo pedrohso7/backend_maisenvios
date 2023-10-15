@@ -6,7 +6,7 @@ import { handleException } from 'src/core/errors/httpExceptionHandler';
 import { Tag } from './entities/tag.entity';
 import { SuccessfulResponse } from 'src/core/response/default_response';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { xlsxFileValidatorInterceptor } from 'src/core/interceptors/xlsxFileValidator.interceptor';
+import { FileTypeInterceptor } from 'src/core/interceptors/file_type_interceptor';
 import { PublisherService } from 'src/core/utils/publisher_client';
 import { Response } from 'express';
 @Controller('tags')
@@ -80,11 +80,10 @@ export class TagsController {
 
   @Post('/upload')
   @UseInterceptors(
-    FileInterceptor('file', 
-    // {
-    //   fileFilter: xlsxFileValidatorInterceptor,
-    // },
+    FileInterceptor(
+      'file',  
     ),
+    FileTypeInterceptor,
   )
   uploadFile(@UploadedFile() file: Express.Multer.File, @Res() res: Response) {
     try {

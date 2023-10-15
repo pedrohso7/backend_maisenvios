@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { Tag } from './entities/tag.entity';
+import { Console } from 'console';
 
 @Injectable()
 export class TagsService {
@@ -20,6 +21,21 @@ export class TagsService {
     });
     this.tags.push(tag);
     return tag;
+  }
+
+  createFromExtractedFile(data: any) {
+    let extractedTags = data as any[];
+    extractedTags.forEach((tag)=>{
+      const newTag =  new Tag({
+        name: tag.props.name,
+        status: tag.props.status,
+        source: tag.props.source,
+        price: tag.props.price,
+      });
+      this.tags.push(newTag);
+    });
+    
+    return this.tags;
   }
 
   findAll() {

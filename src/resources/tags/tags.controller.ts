@@ -1,14 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { TagsService } from './tags.service';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { handleHttpException } from 'src/core/errors/httpExceptionHandler';
 import { Tag } from './entities/tag.entity';
 import { DefaultResponse, SuccessfulResponse } from 'src/core/response/default_response';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { xlsxFileValidatorInterceptor } from 'src/core/interceptors/xlsxFileValidator.interceptor';
+import { PublisherService } from 'src/core/utils/publisher_client';
 
 @Controller('tags')
 export class TagsController {
-  constructor(private readonly tagsService: TagsService) {}
+  constructor(private readonly tagsService: TagsService, private readonly publisherService: PublisherService) {}
 
   @Post()
   create(@Body() createTagDto: CreateTagDto): DefaultResponse<Tag> {
@@ -68,6 +71,31 @@ export class TagsController {
         data: {},
       } as SuccessfulResponse<Tag>;  
     } catch (error){
+      return handleHttpException(error);
+    }
+  }
+
+  @Post('/upload')
+  @UseInterceptors(
+    FileInterceptor('file', 
+    // {
+    //   fileFilter: xlsxFileValidatorInterceptor,
+    // },
+    ),
+  )
+  uploadFile(@UploadedFile() file: Express.Multer.File) {
+    try {
+      this.publisherService.sendFileToConsumer(
+        file, 
+        (data) => this.tagsService.createFromExtractedFile(data),
+      );
+      return {
+        statusCode: HttpStatus.ACCEPTED,
+        data: {
+          message: 'Arquivo sendo processado...'
+        },
+      } as SuccessfulResponse<{message: string}>;
+    } catch (error) {
       return handleHttpException(error);
     }
   }

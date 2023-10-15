@@ -24,7 +24,7 @@ export class TagsController {
         data: this.tagsService.create(createTagDto),
       } as SuccessfulResponse<Tag>);
     } catch (error){
-      return handleHttpException(error);
+      return handleHttpException(error, res);
     }
   }
 
@@ -36,7 +36,7 @@ export class TagsController {
         data: this.tagsService.findAll(),
       } as SuccessfulResponse<Tag[]>);
     } catch (error){
-      return handleHttpException(error);
+      return handleHttpException(error, res);
     }
   }
 
@@ -48,7 +48,7 @@ export class TagsController {
         data: this.tagsService.findOne(+id),
       } as SuccessfulResponse<Tag>);
     } catch (error){
-      return handleHttpException(error);
+      return handleHttpException(error, res);
     }
   }
 
@@ -61,7 +61,7 @@ export class TagsController {
         data: {},
       } as SuccessfulResponse<Tag>);             
     } catch (error){
-      return handleHttpException(error);
+      return handleHttpException(error, res);
     }
   }
 
@@ -74,7 +74,7 @@ export class TagsController {
         data: {},
       } as SuccessfulResponse<Tag>);  
     } catch (error){
-      return handleHttpException(error);
+      return handleHttpException(error, res);
     }
   }
 
@@ -100,7 +100,7 @@ export class TagsController {
         },
       } as SuccessfulResponse<{message: string}>);
     } catch (error) {
-      return handleHttpException(error);
+      return handleHttpException(error, res);
     }
   }
 }

@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { Tag } from './entities/tag.entity';
@@ -57,7 +57,7 @@ export class TagsService {
 
   findOne(id: number) {
     if(!verifyIfExists(this.tags, id)){
-      throw new HttpException('Item não existe, id inválido', HttpStatus.CONFLICT);
+      throw new NotFoundException('Item não existe, id inválido');
     };
 
     return this.tags[id];
@@ -65,7 +65,7 @@ export class TagsService {
 
   update(id: number, updateTagDto: UpdateTagDto) {
     if(!verifyIfExists(this.tags, id)){
-      throw new HttpException('Item não existe, id inválido', HttpStatus.CONFLICT);
+      throw new NotFoundException('Item não existe, id inválido');
     };
     
     const {tag, name, status, source, price} = updateTagDto;
@@ -84,7 +84,7 @@ export class TagsService {
 
   remove(id: number) {
     if(!verifyIfExists(this.tags, id)){
-      throw new HttpException('Item não existe, id inválido', HttpStatus.CONFLICT);
+      throw new NotFoundException('Item não existe, id inválido');
     };
 
     this.tags.splice(id, 1);

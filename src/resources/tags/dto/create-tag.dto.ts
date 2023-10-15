@@ -10,6 +10,7 @@ export class  CreateTagDto {
     name: string;
     
     @IsNumber()
+    @IsNotEmpty()
     status: number;
     
     @IsString()
@@ -17,5 +18,6 @@ export class  CreateTagDto {
     source: string;
     
     @IsNumber()
+    @IsNotEmpty()
     price: number;
 }

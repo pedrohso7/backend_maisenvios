@@ -3,7 +3,7 @@ import { ErrorResponse } from '../response/default_response';
 import { HttpExceptionMessages, statusCodeToMessageMap } from '../constants/exception_messages_constants';
 import { Response } from 'express';
 
-export const handleHttpException = (error: any, res: Response): ErrorResponse => {
+export const handleException = (error: any, res: Response): ErrorResponse => {
   if(error instanceof HttpException){
     const status = error.getStatus();
     res.status(status).send({

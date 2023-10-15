@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, UseInter
 import { TagsService } from './tags.service';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
-import { handleHttpException } from 'src/core/errors/httpExceptionHandler';
+import { handleException } from 'src/core/errors/httpExceptionHandler';
 import { Tag } from './entities/tag.entity';
 import { SuccessfulResponse } from 'src/core/response/default_response';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -24,7 +24,7 @@ export class TagsController {
         data: this.tagsService.create(createTagDto),
       } as SuccessfulResponse<Tag>);
     } catch (error){
-      return handleHttpException(error, res);
+      return handleException(error, res);
     }
   }
 
@@ -36,7 +36,7 @@ export class TagsController {
         data: this.tagsService.findAll(),
       } as SuccessfulResponse<Tag[]>);
     } catch (error){
-      return handleHttpException(error, res);
+      return handleException(error, res);
     }
   }
 
@@ -48,7 +48,7 @@ export class TagsController {
         data: this.tagsService.findOne(+id),
       } as SuccessfulResponse<Tag>);
     } catch (error){
-      return handleHttpException(error, res);
+      return handleException(error, res);
     }
   }
 
@@ -61,7 +61,7 @@ export class TagsController {
         data: {},
       } as SuccessfulResponse<Tag>);             
     } catch (error){
-      return handleHttpException(error, res);
+      return handleException(error, res);
     }
   }
 
@@ -74,7 +74,7 @@ export class TagsController {
         data: {},
       } as SuccessfulResponse<Tag>);  
     } catch (error){
-      return handleHttpException(error, res);
+      return handleException(error, res);
     }
   }
 
@@ -100,7 +100,7 @@ export class TagsController {
         },
       } as SuccessfulResponse<{message: string}>);
     } catch (error) {
-      return handleHttpException(error, res);
+      return handleException(error, res);
     }
   }
 }

@@ -9,6 +9,9 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { FileTypeInterceptor } from 'src/core/interceptors/file_type_interceptor';
 import { PublisherService } from 'src/core/utils/publisher_client';
 import { Response } from 'express';
+import { ApiTags } from '@nestjs/swagger';
+
+@ApiTags('tags')
 @Controller('tags')
 export class TagsController {
   constructor(

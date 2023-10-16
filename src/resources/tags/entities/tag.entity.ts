@@ -1,4 +1,6 @@
 export interface TagProps {
+    id: number
+    tag: String
     name: String
     status: number
     source: String
@@ -18,6 +20,14 @@ export class Tag {
         return this.props;
     }
     
+    get id(){
+        return this.props.id;
+    }
+
+    get tag(){
+        return this.props.tag;
+    }
+
     get name(){
         return this.props.name;
     }
@@ -35,6 +45,10 @@ export class Tag {
     }
 
     /* Setters */
+    set tag(tag: String){
+        this.props.tag = tag;
+    }
+
     set name(name: String){
         this.props.name = name;
     }

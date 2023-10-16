@@ -38,18 +38,18 @@ export class CustomValidationPipe implements PipeTransform<any> {
         const variableName = error.constraints[constraint].split(' ')[0];
         if (error.constraints.hasOwnProperty(constraint)) {
             switch (constraint) {
-                case 'isNotEmpty':
-                    errorMessages.push(`Campo ${variableName} campo não pode estar vazio.`);
-                    break;
-                case 'isString':
-                    errorMessages.push(`Campo ${variableName} deve ser uma string.`);
-                    break;
-                case 'isNumber':
-                    errorMessages.push(`Campo ${variableName} deve ser um número válido.`);
-                    break;
-                default:
-                    errorMessages.push(error.constraints[constraint]);
-                    break;
+              case 'isNotEmpty':
+                errorMessages.push(`Campo ${variableName} campo não pode estar vazio.`);
+                break;
+              case 'isString':
+                errorMessages.push(`Campo ${variableName} deve ser uma string.`);
+                break;
+              case 'isNumber':
+                errorMessages.push(`Campo ${variableName} deve ser um número válido.`);
+                break;
+              default:
+                errorMessages.push(error.constraints[constraint]);
+                break;
             }
         }
       }

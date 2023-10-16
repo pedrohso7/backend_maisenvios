@@ -10,7 +10,7 @@ export class PublisherService {
     this.client = ClientProxyFactory.create({
       transport: Transport.RMQ,
       options: {
-        urls: ['amqp://localhost:5672'],
+        urls: ['amqp://rabbitmq:5672'],
         queue: 'spreadsheet_exchange',
         queueOptions: {
           durable: false
@@ -21,7 +21,12 @@ export class PublisherService {
 
   @Post()
   async sendFileToConsumer(data: Express.Multer.File, callbackAction: (data: any) => void) {
-    const extractedData = await lastValueFrom(this.client.send('process_data', data.buffer.toString('base64')));  
-    callbackAction(extractedData);
+    try{
+      const extractedData = await lastValueFrom(this.client.send('process_data', data.buffer.toString('base64')));  
+      callbackAction(extractedData);
+    } catch (error){
+      console.log(error);
+    }
+    
   }
 }

@@ -12,7 +12,7 @@ async function bootstrap() {
           type: 'topic',
         },
       ],
-      uri: 'amqp://localhost:5672',
+      uri: 'amqp://rabbitmq:5672',
     }),
   );
   await app.listen(3000);

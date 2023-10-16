@@ -19,6 +19,7 @@ export class TagsService {
     };
     
     const newTag = new Tag({
+      id: this.tags.length,
       tag: tag,
       name: name,
       status: status,
@@ -39,6 +40,7 @@ export class TagsService {
       };
 
       const newTag =  new Tag({
+        id: this.tags.length,
         tag: tag.props.tag,
         name: tag.props.name,
         status: tag.props.status,
@@ -71,6 +73,7 @@ export class TagsService {
     const {tag, name, status, source, price} = updateTagDto;
 
     const newTag = new Tag({
+      id: this.tags.length,
       tag: tag,
       name: name,
       status: status,

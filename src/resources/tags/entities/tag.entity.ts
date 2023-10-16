@@ -1,4 +1,5 @@
 export interface TagProps {
+    id: number
     tag: String
     name: String
     status: number
@@ -19,6 +20,10 @@ export class Tag {
         return this.props;
     }
     
+    get id(){
+        return this.props.id;
+    }
+
     get tag(){
         return this.props.tag;
     }

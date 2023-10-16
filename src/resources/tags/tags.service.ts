@@ -62,7 +62,7 @@ export class TagsService {
       throw new NotFoundException('Item não existe, id inválido');
     };
 
-    return this.tags[id];
+    return this.tags.find(tag => tag.id == id);
   }
 
   update(id: number, updateTagDto: UpdateTagDto) {
@@ -72,8 +72,10 @@ export class TagsService {
     
     const {tag, name, status, source, price} = updateTagDto;
 
+    const selectedTag = this.tags.find(tag => tag.id == id);
+    
     const newTag = new Tag({
-      id: this.tags.length,
+      id: selectedTag.id,
       tag: tag,
       name: name,
       status: status,
@@ -81,7 +83,7 @@ export class TagsService {
       price: price,
     });
 
-    this.tags[id] = newTag;
+    this.tags[this.tags.indexOf(selectedTag)] = newTag;
     return newTag;
   }
 
@@ -89,8 +91,8 @@ export class TagsService {
     if(!verifyIfExists(this.tags, id)){
       throw new NotFoundException('Item não existe, id inválido');
     };
-
-    this.tags.splice(id, 1);
+    const selectedTag = this.tags.find(tag => tag.id == id);
+    this.tags.splice(this.tags.indexOf(selectedTag), 1);
     return this.tags;
   }
 }

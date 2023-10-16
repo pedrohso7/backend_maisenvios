@@ -1,5 +1,5 @@
 export const verifyIfExists = (array: any[], id: number): boolean => {
-    const itemExists = array.at(id);
+    const itemExists = array.find(element => element.id == id);
     if(itemExists) return true;
     return false;
 }
